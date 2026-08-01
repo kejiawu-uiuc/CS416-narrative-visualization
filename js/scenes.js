@@ -14,7 +14,7 @@ const SCENES = (() => {
   // We don't hardcode the peak value — we find the max within each window.
   const CASE_WAVE_WINDOWS = [
     { key: "wave1", label: "First wave",        centerMonth: "2020-04", start: "2020-03-15", end: "2020-05-15" },
-    { key: "wave2", label: "Sun Belt summer",   centerMonth: "2020-07", start: "2020-06-15", end: "2020-08-31" },
+    { key: "wave2", label: "Second wave",       centerMonth: "2020-07", start: "2020-06-15", end: "2020-08-31" },
     { key: "wave3", label: "Winter surge",      centerMonth: "2021-01", start: "2020-11-01", end: "2021-02-15" },
     { key: "wave4", label: "Delta variant",     centerMonth: "2021-09", start: "2021-07-01", end: "2021-10-31" },
     { key: "wave5", label: "Omicron variant",   centerMonth: "2022-01", start: "2021-12-01", end: "2022-03-01" },
