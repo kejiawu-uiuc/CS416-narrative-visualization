@@ -74,7 +74,7 @@ const SCENES = (() => {
     });
 
     return {
-      title: "The Waves of the Pandemic — Cases",
+      title: "Five Waves of COVID Cases",
       subtitle: "From 2020 to 2023, the U.S. had five big waves of COVID cases. Each wave hit at a different time and was caused by a different variant or season.",
       narrative: `
         <h2>What the chart shows</h2>

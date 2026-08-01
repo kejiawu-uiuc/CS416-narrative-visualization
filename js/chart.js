@@ -253,7 +253,11 @@ const CHART = (() => {
               .attr("cy", yFor(s, match.value))
               .style("opacity", 1);
             const val = d3.format(",")(Math.round(match.value));
-            html += `<div class="tt-metric" style="color:${s.color}">
+            // Tooltip text always uses a light color for legibility on the
+            // dark tooltip background; the series color is instead shown
+            // as a small swatch preceding the label.
+            html += `<div class="tt-metric">
+                      <span class="tt-swatch" style="background:${s.color}"></span>
                       ${s.label}: ${val}
                     </div>`;
           } else {

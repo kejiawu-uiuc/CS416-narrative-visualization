@@ -228,7 +228,17 @@ a { color: #b03a2e; }
   margin-bottom: 2px;
 }
 .tooltip .tt-metric {
-  color: #ffb3ac;
+  color: #d3d3d3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tooltip .tt-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .hover-line {
