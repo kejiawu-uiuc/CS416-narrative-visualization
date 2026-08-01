@@ -75,18 +75,17 @@ const SCENES = (() => {
 
     return {
       title: "The Waves of the Pandemic — Cases",
-      subtitle: "From 2020 through 2023, the U.S. experienced five distinct waves of COVID-19 infections. Each was driven by a different variant, region, or season.",
+      subtitle: "From 2020 to 2023, the U.S. had five big waves of COVID cases. Each wave hit at a different time and was caused by a different variant or season.",
       narrative: `
-        <h2>What you're seeing</h2>
-        <p>This is the daily count of new COVID-19 cases in the United States,
-        smoothed with a 7-day rolling average.</p>
-        <p>Five clear peaks stand out. The <strong>first wave</strong> in spring 2020
-        looks small on this chart, but at the time it overwhelmed hospitals in
-        New York and New Jersey.</p>
-        <p>Notice how each successive wave is <strong>larger than the last</strong>,
-        culminating in <strong>Omicron</strong> — the tallest peak — which reported
-        roughly ten times more daily cases than the first wave.</p>
-        <p style="color:#888;font-style:italic">Hover over the chart to see exact values for any day.</p>
+        <h2>What the chart shows</h2>
+        <p>This is the number of new COVID cases each day in the U.S.,
+        smoothed with a 7-day average so the shape is easier to see.</p>
+        <p>You can spot five clear peaks. The <strong>first wave</strong>
+        in spring 2020 looks small here, but at the time it filled hospitals
+        in New York and New Jersey.</p>
+        <p>Each wave was <strong>bigger than the one before</strong>.
+        The tallest, <strong>Omicron</strong>, had about ten times more
+        daily cases than the first wave.</p>
       `,
     };
   }
@@ -109,18 +108,19 @@ const SCENES = (() => {
     });
 
     return {
-      title: "But Deaths Tell a Different Story",
-      subtitle: "The same five waves — but their heights don't match. The winter of 2020–21 was the deadliest, not the Omicron surge.",
+      title: "But Deaths Look Different",
+      subtitle: "The waves came at the same times, but their sizes don't match. The winter of 2020–21 was the deadliest — not Omicron.",
       narrative: `
-        <h2>Same waves, different heights</h2>
-        <p>Now we're plotting <strong>new deaths per day</strong> on the same timeline.
-        The shape looks similar — five peaks — but the <em>proportions</em> are different.</p>
-        <p>The <strong>winter 2020–21 surge</strong> is the tallest here, peaking at
-        roughly 3,400 deaths a day. That's when vaccines were just beginning to roll out.</p>
-        <p>Omicron, which produced the largest case wave by far, produced a
-        <strong>smaller death wave</strong> than the winter surge.</p>
-        <p>The next scene lays these two curves side by side to make the
-        divergence unmistakable.</p>
+        <h2>Same waves, different sizes</h2>
+        <p>This chart shows <strong>new deaths per day</strong> in the U.S.
+        The waves come at the same times as the case waves, but the
+        tallest peak is not the same one.</p>
+        <p>The <strong>winter 2020–21 wave</strong> is the tallest here,
+        with about 3,400 deaths a day. Vaccines had just started to roll out.</p>
+        <p>Omicron had the most cases by far, but it caused
+        <strong>fewer deaths</strong> than the winter wave.</p>
+        <p>The next scene puts both curves on the same chart to make the
+        gap easy to see.</p>
       `,
     };
   }
@@ -140,8 +140,8 @@ const SCENES = (() => {
       date: omicronCases.date,
       value: omicronCases.value,
       seriesKey: "cases",
-      label: "Omicron: record cases",
-      sublabel: "Cases spiked to an all-time high",
+      label: "Omicron: most cases ever",
+      sublabel: "Cases hit an all-time high",
       dx: -180, dy: 25,
     });
     if (omicronDeaths) annotations.push({
@@ -149,7 +149,7 @@ const SCENES = (() => {
       value: omicronDeaths.value,
       seriesKey: "deaths",
       label: "…but fewer deaths",
-      sublabel: "Vaccines + milder variant",
+      sublabel: "Vaccines and a milder variant",
       dx: 25, dy: 40,
     });
     if (winterDeaths) annotations.push({
@@ -157,7 +157,7 @@ const SCENES = (() => {
       value: winterDeaths.value,
       seriesKey: "deaths",
       label: "Deadliest wave",
-      sublabel: "Pre-vaccine winter surge",
+      sublabel: "Before vaccines were widely available",
       dx: 30, dy: 25,
     });
 
@@ -173,20 +173,20 @@ const SCENES = (() => {
     });
 
     return {
-      title: "The Decoupling of Cases and Deaths",
-      subtitle: "Each curve is normalized to its own peak so their shapes can be compared directly. If cases and deaths moved together, the curves would overlap.",
+      title: "Cases and Deaths Split Apart",
+      subtitle: "Each line is scaled so its own highest point is 100%. If cases and deaths moved together, the two lines would match.",
       narrative: `
-        <h2>Cases and deaths pulled apart</h2>
-        <p>To see the divergence, we normalize each series so its highest point
-        equals 100%. That lets us compare the <em>shape</em> of the curves
-        without one dwarfing the other.</p>
-        <p>Notice: the <strong>winter 2020–21 death peak</strong> reaches 100%,
-        but the case peak at that time is only around 30% of its eventual maximum.</p>
-        <p>Conversely, at the <strong>Omicron case peak</strong>, deaths only reach
-        about 75% of their own peak — a striking decoupling made possible by
-        <strong>vaccines</strong>, <strong>prior infection</strong>, and the
-        <strong>milder Omicron variant</strong>.</p>
-        <p>In the next scene, you can explore this story in your own state.</p>
+        <h2>Why the two lines don't match</h2>
+        <p>To compare the <em>shape</em> of the two curves, we scale each one
+        so its highest point is 100%. Now the peaks are the same height and
+        we can look at the timing.</p>
+        <p>During the <strong>winter 2020–21 wave</strong>, deaths hit 100%,
+        but cases only reached about 30% of their later peak.</p>
+        <p>At the <strong>Omicron peak</strong>, it's the opposite: cases hit
+        100%, but deaths only reach about 75%. Thanks to
+        <strong>vaccines</strong>, past infections, and a
+        <strong>milder variant</strong>, far fewer people died.</p>
+        <p>In the next scene, you can look at your own state.</p>
       `,
     };
   }
@@ -227,18 +227,19 @@ const SCENES = (() => {
 
     return {
       title: `Explore: ${app.selectedState}`,
-      subtitle: `The wave labels are placed at each local peak in ${app.selectedState}'s data. Use the controls to switch between cases, deaths, or a different state.`,
+      subtitle: `The labels sit on each peak in ${app.selectedState}. Use the controls below to pick a different state or switch between cases and deaths.`,
       narrative: `
         <h2>Your turn to explore</h2>
-        <p>Every state had its own version of the pandemic. Use the dropdown
-        below the chart to see how <strong>${app.selectedState}</strong>'s
-        timeline compares to the national story.</p>
-        <p>Some states — like the <strong>Dakotas</strong> — were hit hardest by the
-        <strong>fall 2020</strong> wave. Others, like the <strong>Northeast</strong>,
-        had a devastating first wave that never returned to the same scale.</p>
-        <p>Toggle <strong>New cases</strong> and <strong>New deaths</strong> to see
-        the decoupling in your own state.</p>
-        <p style="color:#888;font-style:italic">Hover over the chart for exact daily values.</p>
+        <p>Every state had its own pandemic. Pick a state from the dropdown
+        to see how <strong>${app.selectedState}</strong> compares to the
+        national story.</p>
+        <p>Some states — like the <strong>Dakotas</strong> — were hit hardest
+        in <strong>fall 2020</strong>. Others, like the
+        <strong>Northeast</strong>, had a huge first wave that was never
+        matched later.</p>
+        <p>Switch between <strong>New cases</strong> and
+        <strong>New deaths</strong> to see how they compare in your state.</p>
+        <p style="color:#888;font-style:italic">Hover over the chart to see the number for any day.</p>
       `,
     };
   }
