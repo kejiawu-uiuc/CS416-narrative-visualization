@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waves of a Pandemic — A COVID-19 Narrative</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">Waves of a Pandemic</div>
+    <nav class="scene-dots" id="scene-dots" aria-label="Scene navigation"></nav>
+  </header>
+
+  <main class="stage">
+    <section class="scene-header">
+      <h1 id="scene-title">Loading…</h1>
+      <p id="scene-subtitle"></p>
+    </section>
+
+    <section class="scene-body">
+      <div class="chart-wrap">
+        <svg id="chart" role="img" aria-label="COVID-19 chart"></svg>
+        <div id="tooltip" class="tooltip" hidden></div>
+      </div>
+
+      <aside class="narrative" id="narrative"></aside>
+    </section>
+
+    <section class="scene-controls" id="scene-controls" hidden>
+      <div class="control-group">
+        <label for="state-select">State</label>
+        <select id="state-select"></select>
+      </div>
+      <div class="control-group">
+        <label>Metric</label>
+        <div class="toggle" role="tablist" id="metric-toggle">
+          <button data-value="cases" class="active" role="tab" aria-selected="true">New cases</button>
+          <button data-value="deaths" role="tab" aria-selected="false">New deaths</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="scene-nav">
+      <button id="prev-btn" class="nav-btn" disabled>← Previous</button>
+      <span id="scene-counter" class="scene-counter">Scene 1 of 4</span>
+      <button id="next-btn" class="nav-btn primary">Next →</button>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Data: <a href="https://github.com/nytimes/covid-19-data" target="_blank" rel="noopener">The New York Times COVID-19 Data</a>.
+      Built with D3 for CS 416 Narrative Visualization.
+    </p>
+  </footer>
+
+  <script src="js/chart.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
