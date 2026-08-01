@@ -115,11 +115,6 @@ function render() {
   document.getElementById("scene-counter").textContent =
     `Scene ${APP.currentScene + 1} of ${SCENE_COUNT}`;
 
-  // Update dot indicators
-  document.querySelectorAll("#scene-dots button").forEach((btn, i) => {
-    btn.classList.toggle("active", i === APP.currentScene);
-  });
-
   // Prev / Next enabled state
   document.getElementById("prev-btn").disabled = APP.currentScene === 0;
   document.getElementById("next-btn").disabled = APP.currentScene === SCENE_COUNT - 1;
@@ -141,15 +136,6 @@ function setupTriggers() {
     () => setScene(APP.currentScene - 1));
   document.getElementById("next-btn").addEventListener("click",
     () => setScene(APP.currentScene + 1));
-
-  // Scene dots
-  const dots = document.getElementById("scene-dots");
-  for (let i = 0; i < SCENE_COUNT; i++) {
-    const b = document.createElement("button");
-    b.setAttribute("aria-label", `Go to scene ${i + 1}`);
-    b.addEventListener("click", () => setScene(i));
-    dots.appendChild(b);
-  }
 
   // State dropdown
   const sel = document.getElementById("state-select");

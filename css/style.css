@@ -24,21 +24,6 @@ a { color: #b03a2e; }
   font-size: 18px;
   letter-spacing: 0.02em;
 }
-.scene-dots {
-  display: flex;
-  gap: 10px;
-}
-.scene-dots button {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  border: 2px solid #fafaf7;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-  transition: background 120ms ease;
-}
-.scene-dots button.active { background: #b03a2e; border-color: #b03a2e; }
-.scene-dots button:hover:not(.active) { background: rgba(255,255,255,0.3); }
 
 /* ---------- Stage ---------- */
 .stage {
