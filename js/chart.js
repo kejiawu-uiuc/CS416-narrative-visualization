@@ -7,7 +7,7 @@
  */
 
 const CHART = (() => {
-  const MARGIN = { top: 30, right: 40, bottom: 50, left: 70 };
+  const MARGIN = { top: 110, right: 40, bottom: 50, left: 70 };
 
   /**
    * Render (or re-render) the main chart into #chart.
@@ -130,68 +130,116 @@ const CHART = (() => {
       });
     }
 
-    // --- Annotations (visual template: dashed line, dot, label box) ---
-    const annGroup = g.append("g").attr("class", "annotations");
-
-    (cfg.annotations || []).forEach(a => {
-      const series = cfg.series.find(s => s.key === a.seriesKey) || cfg.series[0];
-      const point = series.data.find(d => +d.date === +a.date)
-                 || nearestPoint(series.data, a.date);
-      if (!point) return;
-
-      const px = x(point.date);
-      const py = yFor(series, point.value);
-
-      const dx = a.dx != null ? a.dx : 0;
-      const dy = a.dy != null ? a.dy : -60;
-
-      // Connector line
-      annGroup.append("line")
-        .attr("class", "annotation-line")
-        .attr("x1", px).attr("y1", py)
-        .attr("x2", px + dx).attr("y2", py + dy);
-
-      // Point dot
-      annGroup.append("circle")
-        .attr("class", "annotation-dot")
-        .attr("cx", px).attr("cy", py)
-        .attr("r", 4);
-
-      // Label box
-      const labelG = annGroup.append("g")
-        .attr("transform", `translate(${px + dx}, ${py + dy})`);
-
-      const labelText = labelG.append("text")
-        .attr("class", "annotation-label")
-        .attr("text-anchor", a.dx < 0 ? "end" : "start")
-        .attr("x", a.dx < 0 ? -6 : 6)
-        .attr("y", 0)
-        .text(a.label);
-
-      const subText = labelG.append("text")
-        .attr("class", "annotation-sublabel")
-        .attr("text-anchor", a.dx < 0 ? "end" : "start")
-        .attr("x", a.dx < 0 ? -6 : 6)
-        .attr("y", 14)
-        .text(a.sublabel || "");
-
-      // Insert background rect sized to text bbox
-      const bbox1 = labelText.node().getBBox();
-      const bbox2 = subText.node().getBBox();
-      const padX = 6, padY = 4;
-      const bx = Math.min(bbox1.x, bbox2.x) - padX;
-      const by = Math.min(bbox1.y, bbox2.y) - padY;
-      const bw = Math.max(bbox1.width, bbox2.width) + padX * 2;
-      const bh = (bbox2.y + bbox2.height) - Math.min(bbox1.y, bbox2.y) + padY * 2;
-
-      labelG.insert("rect", "text")
-        .attr("class", "annotation-bg")
-        .attr("x", bx).attr("y", by)
-        .attr("width", bw).attr("height", bh);
-    });
+    // --- Annotations (auto-placed in a two-row strip above the chart) ---
+    //
+    // The strategy is:
+    //   1. Resolve each annotation to a concrete (px, py) peak point.
+    //   2. Sort by peak x, assign alternating rows (0 = lower, 1 = higher)
+    //      so vertical neighbors never collide.
+    //   3. Sweep left-to-right per row: shift a label right if it would
+    //      overlap the previous label in the same row.
+    //   4. Clamp horizontally so labels stay inside the chart bounds.
+    //   5. Draw dashed connector from label bottom-center down to its peak.
+    //
+    // This replaces the earlier per-annotation dx/dy scheme, which was
+    // brittle when peaks were close together (e.g. state-level views).
+    layoutAnnotations({ g, cfg, x, yFor, innerW });
 
     // --- Hover tooltip (free-form interaction) ---
     setupHover(g, cfg, x, y, yFor, innerW, innerH);
+  }
+
+  // Two-row layout at the top of the chart. y coords are in chart-local
+  // space where the plot area starts at y=0 and negative y is the top strip.
+  const ROW_Y = [-50, -95];   // row 0 (closer to chart), row 1 (further up)
+  const LABEL_H = 34;          // approx height of a two-line label box
+  const H_GAP = 6;             // min horizontal gap between labels in a row
+
+  function layoutAnnotations({ g, cfg, x, yFor, innerW }) {
+    const annGroup = g.append("g").attr("class", "annotations");
+
+    // Resolve each annotation to a concrete peak point.
+    const items = (cfg.annotations || []).map(a => {
+      const series = cfg.series.find(s => s.key === a.seriesKey) || cfg.series[0];
+      const point = series.data.find(d => +d.date === +a.date)
+                 || nearestPoint(series.data, a.date);
+      if (!point) return null;
+      return {
+        a,
+        series,
+        px: x(point.date),
+        py: yFor(series, point.value),
+      };
+    }).filter(Boolean);
+
+    if (!items.length) return;
+
+    // Sort by peak x so left-to-right sweep works.
+    items.sort((a, b) => a.px - b.px);
+
+    // Assign alternating rows (0, 1, 0, 1, …) so adjacent labels are on
+    // different rows and cannot collide vertically.
+    items.forEach((it, i) => { it.row = i % 2; });
+
+    // First pass: create label groups & measure their widths so we know
+    // how much horizontal space each one needs.
+    items.forEach(it => {
+      const grp = annGroup.append("g").attr("class", "annotation");
+      grp.append("text")
+        .attr("class", "annotation-label")
+        .attr("text-anchor", "middle")
+        .attr("y", 12)
+        .text(it.a.label);
+      grp.append("text")
+        .attr("class", "annotation-sublabel")
+        .attr("text-anchor", "middle")
+        .attr("y", 26)
+        .text(it.a.sublabel || "");
+      const bb = grp.node().getBBox();
+      it.w = bb.width + 12;   // 6px padding on each side
+      it.grp = grp;
+    });
+
+    // Second pass: horizontal collision resolution within each row.
+    [0, 1].forEach(row => {
+      const rowItems = items.filter(it => it.row === row);
+      let prevRight = -Infinity;
+      for (const it of rowItems) {
+        let cx = it.px;
+        const minLeft = prevRight + H_GAP;
+        if (cx - it.w / 2 < minLeft) cx = minLeft + it.w / 2;
+        // Clamp to chart bounds.
+        if (cx + it.w / 2 > innerW) cx = innerW - it.w / 2;
+        if (cx - it.w / 2 < 0)       cx = it.w / 2;
+        it.cx = cx;
+        prevRight = cx + it.w / 2;
+      }
+    });
+
+    // Third pass: draw background rects, connectors, peak dots, and
+    // position each label group at its resolved (cx, targetY).
+    items.forEach(it => {
+      const ty = ROW_Y[it.row];
+      it.grp.attr("transform", `translate(${it.cx}, ${ty})`);
+      it.grp.insert("rect", "text")
+        .attr("class", "annotation-bg")
+        .attr("x", -it.w / 2)
+        .attr("y", 0)
+        .attr("width", it.w)
+        .attr("height", LABEL_H);
+
+      // Connector from label bottom-center to peak.
+      annGroup.insert("line", "g.annotation")
+        .attr("class", "annotation-line")
+        .attr("x1", it.cx).attr("y1", ty + LABEL_H)
+        .attr("x2", it.px).attr("y2", it.py);
+
+      // Peak dot.
+      annGroup.append("circle")
+        .attr("class", "annotation-dot")
+        .attr("cx", it.px).attr("cy", it.py)
+        .attr("r", 3.5);
+    });
   }
 
   function nearestPoint(data, targetDate) {
