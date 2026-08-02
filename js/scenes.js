@@ -78,13 +78,13 @@ const SCENES = (() => {
       subtitle: "From 2020 to 2023, the U.S. had five big waves of COVID cases. Each wave hit at a different time and was caused by a different variant or season.",
       narrative: `
         <h2>What the chart shows</h2>
-        <p>This is the number of new COVID cases each day in the U.S.,
+        <p>This is the number of new COVID cases each day in the United States,
         smoothed with a 7-day average so the shape is easier to see.</p>
-        <p>You can spot five clear peaks. The <strong>first wave</strong>
+        <p>You can spot five clear peaks. The <strong>First wave</strong>
         in spring 2020 looks small here, but at the time it filled hospitals
         in New York and New Jersey.</p>
-        <p>Each wave was <strong>bigger than the one before</strong>.
-        The tallest, <strong>Omicron</strong>, had about ten times more
+        <p>Each wave was bigger than the one before.
+        The tallest, <strong>Omicron variant</strong>, had about ten times more
         daily cases than the first wave.</p>
       `,
     };
@@ -112,13 +112,13 @@ const SCENES = (() => {
       subtitle: "The waves came at the same times, but their sizes don't match. The winter of 2020–21 was the deadliest — not Omicron.",
       narrative: `
         <h2>Same waves, different sizes</h2>
-        <p>This chart shows <strong>new deaths per day</strong> in the U.S.
+        <p>This chart shows new deaths per day in the U.S.
         The waves come at the same times as the case waves, but the
         tallest peak is not the same one.</p>
-        <p>The <strong>winter 2020–21 wave</strong> is the tallest here,
+        <p>The <strong>Winter surge (2020-21)</strong> is the tallest here,
         with about 3,400 deaths a day. Vaccines had just started to roll out.</p>
         <p>Omicron had the most cases by far, but it caused
-        <strong>fewer deaths</strong> than the winter wave.</p>
+        fewer deaths than the winter wave.</p>
         <p>The next scene puts both curves on the same chart to make the
         gap easy to see.</p>
       `,
@@ -180,12 +180,12 @@ const SCENES = (() => {
         <p>To compare the <em>shape</em> of the two curves, we scale each one
         so its highest point is 100%. Now the peaks are the same height and
         we can look at the timing.</p>
-        <p>During the <strong>winter 2020–21 wave</strong>, deaths hit 100%,
+        <p>During the <strong>Winter surge (2020-21)</strong>, deaths hit 100%,
         but cases only reached about 30% of their later peak.</p>
-        <p>At the <strong>Omicron peak</strong>, it's the opposite: cases hit
+        <p>At the <strong>Omicron variant peak</strong>, it's the opposite: cases hit
         100%, but deaths only reach about 75%. Thanks to
-        <strong>vaccines</strong>, past infections, and a
-        <strong>milder variant</strong>, far fewer people died.</p>
+        vaccines, past infections, and a
+        milder variant, far fewer people died.</p>
         <p>In the next scene, you can look at your own state.</p>
       `,
     };
@@ -233,12 +233,9 @@ const SCENES = (() => {
         <p>Every state had its own pandemic. Pick a state from the dropdown
         to see how <strong>${app.selectedState}</strong> compares to the
         national story.</p>
-        <p>Some states — like the <strong>Dakotas</strong> — were hit hardest
-        in <strong>fall 2020</strong>. Others, like the
-        <strong>Northeast</strong>, had a huge first wave that was never
-        matched later.</p>
-        <p>Switch between <strong>New cases</strong> and
-        <strong>New deaths</strong> to see how they compare in your state.</p>
+        <br>
+        <p>Switch between New cases and
+        New deaths to see how they compare in your state.</p>
         <p style="color:#888;font-style:italic">Hover over the chart to see the number for any day.</p>
       `,
     };
